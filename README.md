@@ -149,7 +149,7 @@ This task is more tedious but more straightforward than TASK 2! Implement the `b
   2. The function returns a fully-built footer.
   3. Ensure the email link works correctly and attempts to open an email client when clicked.
 
-See below an example of a possible return value of `buildNav`, depending on the data passed into it:
+See below an example of a possible return value of `buildFooter`, depending on the data passed into it:
 
 ```html
   <footer>

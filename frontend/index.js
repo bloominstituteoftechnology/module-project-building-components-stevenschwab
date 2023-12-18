@@ -3,8 +3,16 @@ function moduleProject3() {
   // 👉 TASK 1 - Write a `buildNav` component that returns a nav
 
   function buildNav(links) {
-    //  ✨ do your magic here
-    return document.createElement('nav')
+    const nav = document.createElement('nav');
+    links.forEach(link => {
+      const aElement = document.createElement('a');
+      const { href, textContent, title } = link;
+      aElement.href = href;
+      aElement.title = title;
+      aElement.textContent = textContent;
+      nav.appendChild(aElement);
+    })
+    return nav;
   }
 
   // ❗ DOM creation using your `buildNav` component (do not change):
@@ -19,7 +27,38 @@ function moduleProject3() {
   // 👉 TASK 2A - Write a `buildLearnerCard` component that returns a card
 
   function buildLearnerCard(learner, languages) {
-    //  ✨ do your magic here
+    const learnerElem = document.createElement('div');
+    const { id, fullName, dateOfBirth, favLanguage } = learner;
+    const favNameArr = languages.filter(langObj => {
+      return langObj.id === favLanguage
+    });
+    const favLanguageStr = favNameArr[0].name;
+    learnerElem.classList.add('learner-card');
+
+    const namePara = document.createElement('p');
+    namePara.textContent = fullName;
+    learnerElem.appendChild(namePara);
+
+    const idPara = document.createElement('p');
+    idPara.textContent = `Learner ID: ${id}`;
+    learnerElem.appendChild(idPara);
+
+    const dobPara = document.createElement('p');
+    dobPara.textContent = `Date of Birth: ${dateOfBirth}`;
+    learnerElem.appendChild(dobPara);
+
+    const favLangPara = document.createElement('p');
+    favLangPara.textContent = `Favorite Language: ${favLanguageStr}`;
+    learnerElem.appendChild(favLangPara);
+
+    learnerElem.addEventListener('click', (event) => {
+      event.stopPropagation()
+      const activeCard = document.querySelector('.active');
+      learnerElem.classList.toggle('active');
+      if (activeCard) activeCard.classList.toggle('active');
+    })
+
+    return learnerElem;
   }
 
   {
@@ -39,14 +78,69 @@ function moduleProject3() {
       { id: 41, fullName: 'Sabah Beydoun', dateOfBirth: '1988-03-25', favLanguage: 91 },
       { id: 17, fullName: 'Daniel Castillo', dateOfBirth: '1995-11-05', favLanguage: 12 }
     ]
-    //  ✨ do your magic here
+    for (let learnerObj of learners) {
+      const learnerElem = buildLearnerCard(learnerObj, languages);
+      document.querySelector('section').appendChild(learnerElem);
+    }
   }
 
   // 👉 TASK 3 - Write a `buildFooter` component that returns a footer
 
   function buildFooter(footerData) {
-    //  ✨ do your magic here
-    return document.createElement('footer')
+    const { companyName, address, contactEmail, socialMedia: { twitter, facebook, instagram } } = footerData;
+    // create elements
+    const footer = document.createElement('footer');
+    const companyInfoElem = document.createElement('div');
+    const companyNameElem = document.createElement('p');
+    const addressElem = document.createElement('p');
+    const contactEmailLabelElem = document.createElement('p');
+    const emailElem = document.createElement('a');
+
+    const socialMediaElem = document.createElement('div');
+    const twitterElem = document.createElement('a');
+    const facebookElem = document.createElement('a');
+    const instagramElem = document.createElement('a');
+
+    const copyrightElem = document.createElement('div');
+
+    // create hierarchy
+    contactEmailLabelElem.appendChild(emailElem);
+
+    companyInfoElem.appendChild(companyNameElem);
+    companyInfoElem.appendChild(addressElem);
+    companyInfoElem.appendChild(contactEmailLabelElem);
+
+    socialMediaElem.appendChild(twitterElem);
+    socialMediaElem.appendChild(facebookElem);
+    socialMediaElem.appendChild(instagramElem);
+
+    footer.appendChild(companyInfoElem);
+    footer.appendChild(socialMediaElem);
+    footer.appendChild(copyrightElem);
+
+    // add classes
+    companyInfoElem.classList.add('company-info');
+    companyNameElem.classList.add('company-name');
+    addressElem.classList.add('address');
+    contactEmailLabelElem.classList.add('contact-email');
+    socialMediaElem.classList.add('social-media');
+
+    // add hrefs
+    emailElem.href = `mailto:${contactEmail}`;
+    twitterElem.href = twitter;
+    facebookElem.href = facebook;
+    instagramElem.href = instagram;
+
+    // add text content
+    companyNameElem.textContent = companyName;
+    addressElem.textContent = address;
+    emailElem.textContent = contactEmail;
+    twitterElem.textContent = 'Twitter';
+    facebookElem.textContent = 'Facebook';
+    instagramElem.textContent = 'Instagram';
+    copyrightElem.textContent = '© BLOOM INSTITUTE OF TECHNOLOGY 2023'
+
+    return footer;
   }
 
   // ❗ DOM creation using your `buildFooter` component (do not change):
@@ -62,6 +156,11 @@ function moduleProject3() {
   }))
 
   // 👉 TASK 4 - Clicking on the section should deactivate the active card
+  document.querySelector('section').addEventListener('click', () => {
+    console.log('clicked outside of section')
+    const activeCard = document.querySelector('.active');
+    if (activeCard) activeCard.classList.toggle('active');
+  })
 
   //  ✨ do your magic here
 }
